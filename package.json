@@ -37,6 +37,7 @@
     "jest-cli": "^24.0.0"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "pg": "^7.12.1"
   }
 }

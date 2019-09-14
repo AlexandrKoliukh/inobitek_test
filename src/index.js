@@ -1,16 +1,10 @@
 import { Client } from 'pg';
 import config from './config';
 
-const client = new Client({
-    host: config.host,
-    port: config.port,
-    user: config.user,
-    password: config.password,
-    database: config.database,
-});
+const client = new Client(config);
 
 client.connect();
 client.query('SELECT * FROM nodes', (err, res) => {
-    console.log(err ? err.stack : res.rows); // Hello World!
-    client.end();
+  console.log(err ? err.stack : res.rows);
+  client.end();
 });
