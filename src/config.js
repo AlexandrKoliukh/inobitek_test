@@ -1,7 +1,7 @@
 const database = {
   host: 'localhost',
   port: 5432,
-  user: 'alk',
+  user: 'hexletbot',
   password: 'poiuy09876',
   database: 'inobitek_test',
 };

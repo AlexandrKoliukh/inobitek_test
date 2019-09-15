@@ -8,7 +8,11 @@ const app = express();
 app.use(cors());
 
 const connection = new Client(database);
-connection.connect();
+connection.connect((err) => {
+  if (err) {
+    console.error('connection error', err.stack);
+  } else console.log('connected to database successful');
+});
 
 app.get('/', (req, res) => {
   connection.query(sql.getSelectNodesQuery('*'), (err, result) => {
