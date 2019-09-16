@@ -1,8 +1,9 @@
-const dbName = 'inobitek_test';
+const dbName = 'nodes';
 
 const getTableData = (req, res, db) => {
-  db.select('*').from(dbName)
+  db.select('*').from('nodes')
     .then((items) => {
+      console.log(items);
       if (items.length) {
         res.json(items);
       } else {

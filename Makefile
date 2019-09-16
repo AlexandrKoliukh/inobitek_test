@@ -11,4 +11,4 @@ lint:
 
 start:
 	make build
-	node dist/index.js
+	node dist/server.js
