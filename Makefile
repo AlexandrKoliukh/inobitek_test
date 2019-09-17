@@ -10,5 +10,4 @@ lint:
 	npx eslint .
 
 start:
-	make build
-	node dist
+	npx nodemon --exec babel-node src/index.js

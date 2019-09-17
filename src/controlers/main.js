@@ -1,32 +1,59 @@
-const tableName = 'nodes';
+import knex from 'knex';
+import { databaseConfig } from '../config';
 
-const getData = (req, res, db) => {
+const tableName = 'nodes';
+const db = knex(databaseConfig);
+
+const getAllNodes = (req, res) => {
   db.select('*').from(tableName)
     .then((items) => {
       if (items.length) {
-        res.json({ data: items });
+        res.json({ data: items, dbError: false });
       } else {
-        res.json({ dataExists: 'false' });
+        res.json({ dataExists: 'false', dbError: false });
       }
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const postData = (req, res, db) => {
-  const {
-    ip, port, name, parentId,
-  } = req.body;
-  db(tableName).insert({
-    ip, port, name, parent_id: parentId,
-  })
-    .returning('*')
-    .then((item) => {
-      res.json(item);
+const getNodeById = (req, res) => {
+  db(tableName).where({ id: req.params.id }).select('*')
+    .then((items) => {
+      if (items.length) {
+        res.json({ data: items[0], dbError: false });
+      } else {
+        res.json({ dataExists: false, dbError: false });
+      }
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const putData = (req, res, db) => {
+const getNodeByName = (req, res) => {
+  db(tableName).where({ name: req.params.name }).select('*')
+    .then((items) => {
+      if (items.length) {
+        res.json({ data: items[0], dbError: false });
+      } else {
+        res.json({ dataExists: false, dbError: false });
+      }
+    })
+    .catch(() => res.status(400).json({ dbError: true }));
+};
+
+const postNode = (req, res) => {
+  const {
+    ip, port, name, parentId,
+  } = req.body;
+
+  db(tableName).insert({
+    ip, port, name, parent_id: parentId,
+  })
+    .returning('*')
+    .then(() => res.status(302).json({ dbError: false }))
+    .catch(() => res.status(400).json({ dbError: true }));
+};
+
+const putNode = (req, res) => {
   const {
     id, port, name, ip,
   } = req.body;
@@ -34,24 +61,28 @@ const putData = (req, res, db) => {
     port, name, ip,
   })
     .returning('*')
-    .then((item) => {
-      res.json(item);
+    .then(() => {
+      res.status(204);
+      res.json({ dbError: false });
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const deleteData = (req, res, db) => {
+const deleteNode = (req, res) => {
   const { id } = req.body;
   db(tableName).where({ id }).del()
     .then(() => {
-      res.json({ delete: true });
+      res.status(204);
+      res.json({ dbError: false });
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
 export {
-  getData,
-  postData,
-  putData,
-  deleteData,
+  getAllNodes,
+  getNodeById,
+  getNodeByName,
+  postNode,
+  putNode,
+  deleteNode,
 };
