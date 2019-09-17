@@ -1,59 +1,57 @@
-const dbName = 'nodes';
+const tableName = 'nodes';
 
-const getTableData = (req, res, db) => {
-  db.select('*').from('nodes')
+const getData = (req, res, db) => {
+  db.select('*').from(tableName)
     .then((items) => {
-      console.log(items);
       if (items.length) {
-        res.json(items);
+        res.json({ data: items });
       } else {
         res.json({ dataExists: 'false' });
       }
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }));
+    .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const postTableData = (req, res, db) => {
+const postData = (req, res, db) => {
   const {
-    first, last, email, phone, location, hobby,
+    ip, port, name, parentId,
   } = req.body;
-  const added = new Date();
-  db(dbName).insert({
-    first, last, email, phone, location, hobby, added,
+  db(tableName).insert({
+    ip, port, name, parent_id: parentId,
   })
     .returning('*')
     .then((item) => {
       res.json(item);
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }));
+    .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const putTableData = (req, res, db) => {
+const putData = (req, res, db) => {
   const {
-    id, first, last, email, phone, location, hobby,
+    id, port, name, ip,
   } = req.body;
-  db(dbName).where({ id }).update({
-    first, last, email, phone, location, hobby,
+  db(tableName).where({ id }).update({
+    port, name, ip,
   })
     .returning('*')
     .then((item) => {
       res.json(item);
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }));
+    .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const deleteTableData = (req, res, db) => {
+const deleteData = (req, res, db) => {
   const { id } = req.body;
-  db(dbName).where({ id }).del()
+  db(tableName).where({ id }).del()
     .then(() => {
-      res.json({ delete: 'true' });
+      res.json({ delete: true });
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }));
+    .catch(() => res.status(400).json({ dbError: true }));
 };
 
 export {
-  getTableData,
-  postTableData,
-  putTableData,
-  deleteTableData,
+  getData,
+  postData,
+  putData,
+  deleteData,
 };
