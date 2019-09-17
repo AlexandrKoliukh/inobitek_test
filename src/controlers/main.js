@@ -28,18 +28,6 @@ const getNodeById = (req, res) => {
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
-const getNodeByName = (req, res) => {
-  db(tableName).where({ name: req.params.name }).select('*')
-    .then((items) => {
-      if (items.length) {
-        res.json({ data: items[0], dbError: false });
-      } else {
-        res.json({ dataExists: false, dbError: false });
-      }
-    })
-    .catch(() => res.status(400).json({ dbError: true }));
-};
-
 const postNode = (req, res) => {
   const {
     ip, port, name, parentId,
@@ -81,7 +69,6 @@ const deleteNode = (req, res) => {
 export {
   getAllNodes,
   getNodeById,
-  getNodeByName,
   postNode,
   putNode,
   deleteNode,
