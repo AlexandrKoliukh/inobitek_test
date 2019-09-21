@@ -4,11 +4,12 @@ import { databaseConfig } from '../config';
 const tableName = 'nodes';
 const db = knex(databaseConfig);
 
-const getAllNodes = (req, res) => {
-  db.select('*').from(tableName)
+const getNodesByParentId = (req, res) => {
+  const parentId = +req.params.parentId || null;
+  db(tableName).where({ parent_id: parentId }).select('*')
     .then((items) => {
       if (items.length) {
-        res.json({ data: items, dbError: false });
+        res.json({ nodes: items, dbError: false });
       } else {
         res.json({ dataExists: 'false', dbError: false });
       }
@@ -20,19 +21,7 @@ const getNodeById = (req, res) => {
   db(tableName).where({ id: req.params.id }).select('*')
     .then((items) => {
       if (items.length) {
-        res.json({ data: items[0], dbError: false });
-      } else {
-        res.json({ dataExists: false, dbError: false });
-      }
-    })
-    .catch(() => res.status(400).json({ dbError: true }));
-};
-
-const getNodeByName = (req, res) => {
-  db(tableName).where({ name: req.params.name }).select('*')
-    .then((items) => {
-      if (items.length) {
-        res.json({ data: items[0], dbError: false });
+        res.json({ node: items[0], dbError: false });
       } else {
         res.json({ dataExists: false, dbError: false });
       }
@@ -46,10 +35,12 @@ const postNode = (req, res) => {
   } = req.body;
 
   db(tableName).insert({
-    ip, port, name, parent_id: parentId,
+    ip, port, name, parent_id: +parentId || null,
   })
     .returning('*')
-    .then(() => res.status(302).json({ dbError: false }))
+    .then((item) => {
+      res.json({ node: item[0], dbError: false });
+    })
     .catch(() => res.status(400).json({ dbError: true }));
 };
 
@@ -61,9 +52,9 @@ const putNode = (req, res) => {
     port, name, ip,
   })
     .returning('*')
-    .then(() => {
+    .then((item) => {
       res.status(204);
-      res.json({ dbError: false });
+      res.json({ node: item[0], dbError: false });
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
@@ -79,9 +70,8 @@ const deleteNode = (req, res) => {
 };
 
 export {
-  getAllNodes,
+  getNodesByParentId,
   getNodeById,
-  getNodeByName,
   postNode,
   putNode,
   deleteNode,
