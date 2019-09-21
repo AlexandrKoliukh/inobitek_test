@@ -13,11 +13,11 @@ export default () => {
   app.use(morgan('combined'));
 
   app.get('/', (req, res) => res.json({ data: 'hello world' }));
-  app.get('/nodes', (req, res) => main.getAllNodes(req, res));
-  app.get('/nodes/:id', (req, res) => main.getNodeById(req, res));
-  app.post('/nodes/new', (req, res) => main.postNode(req, res));
-  app.put('/nodes/:id', (req, res) => main.putNode(req, res));
-  app.delete('/nodes/:id', (req, res) => main.deleteNode(req, res));
+  app.get('/getNodesByParentId/:parentId', (req, res) => main.getNodesByParentId(req, res));
+  app.get('/getNodeById/:id', (req, res) => main.getNodeById(req, res));
+  app.post('/addNode', (req, res) => main.postNode(req, res));
+  app.put('/updateNode/:id', (req, res) => main.putNode(req, res));
+  app.delete('/deleteNode/:id', (req, res) => main.deleteNode(req, res));
 
   return app;
 };
