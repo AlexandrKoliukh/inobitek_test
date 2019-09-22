@@ -16,8 +16,8 @@ export default () => {
   app.get('/getNodesByParentId/:parentId', (req, res) => main.getNodesByParentId(req, res));
   app.get('/getNodeById/:id', (req, res) => main.getNodeById(req, res));
   app.post('/addNode', (req, res) => main.postNode(req, res));
-  app.put('/updateNode/:id', (req, res) => main.putNode(req, res));
-  app.delete('/deleteNode/:id', (req, res) => main.deleteNode(req, res));
+  app.put('/updateNode', (req, res) => main.putNode(req, res));
+  app.delete('/deleteNode', (req, res) => main.deleteNode(req, res));
 
   return app;
 };

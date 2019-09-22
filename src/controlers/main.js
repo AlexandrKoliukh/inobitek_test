@@ -9,9 +9,9 @@ const getNodesByParentId = (req, res) => {
   db(tableName).where({ parent_id: parentId }).select('*')
     .then((items) => {
       if (items.length) {
-        res.json({ nodes: items, dbError: false });
+        res.json({ nodes: items, dbError: false, dataExists: true });
       } else {
-        res.json({ dataExists: 'false', dbError: false });
+        res.json({ dataExists: false, dbError: false });
       }
     })
     .catch(() => res.status(400).json({ dbError: true }));
@@ -21,7 +21,7 @@ const getNodeById = (req, res) => {
   db(tableName).where({ id: req.params.id }).select('*')
     .then((items) => {
       if (items.length) {
-        res.json({ node: items[0], dbError: false });
+        res.json({ node: items[0], dbError: false, dataExists: true });
       } else {
         res.json({ dataExists: false, dbError: false });
       }
@@ -53,7 +53,6 @@ const putNode = (req, res) => {
   })
     .returning('*')
     .then((item) => {
-      res.status(204);
       res.json({ node: item[0], dbError: false });
     })
     .catch(() => res.status(400).json({ dbError: true }));
@@ -63,8 +62,7 @@ const deleteNode = (req, res) => {
   const { id } = req.body;
   db(tableName).where({ id }).del()
     .then(() => {
-      res.status(204);
-      res.json({ dbError: false });
+      res.json({ id, dbError: false });
     })
     .catch(() => res.status(400).json({ dbError: true }));
 };
