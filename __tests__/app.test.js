@@ -1,7 +1,9 @@
 import request from 'supertest';
 import matchers from 'jest-supertest-matchers';
 
-import solution from '../src/server';
+import server from '../src/server';
+
+let postID = 0;
 
 describe('requests', () => {
   beforeAll(() => {
@@ -9,32 +11,37 @@ describe('requests', () => {
   });
 
   it('GET /', async () => {
-    const res = await request(solution()).get('/');
+    const res = await request(server()).get('/');
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('GET /nodes', async () => {
-    const res = await request(solution()).get('/nodes');
+  it('GET /getNodesByParentId:id', async () => {
+    const res = await request(server()).get('/getNodesByParentId/0');
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('GET /nodes/:id', async () => {
-    const res = await request(solution())
-      .get('/nodes/1');
-    expect(res).toHaveHTTPStatus(200);
-  });
-
-  // it('POST /nodes/new', async () => {
+  // it('GET /getNodesById/:id', async () => {
   //   const res = await request(solution())
-  //     .post('/nodes/new')
-  //     .send({ ip: 'TestIP', name: 'TestName', port: 999999, parent_id: 1 });
-  //   expect(res).toHaveHTTPStatus(302);
-  //   expect(res.body.dbError).toBeFalsy();
+  //     .get('/getNodesById/1');
+  //   expect(res).toHaveHTTPStatus(200);
   // });
 
-  it('POST /nodes (errors)', async () => {
-    const res = await request(solution())
-      .post('/nodes/new')
+  it('POST /addNode', async () => {
+    const res = await request(server())
+      .post('/addNode')
+      .send({
+        ip: 'TestIP', name: 'TestName', port: 999999, parent_id: 1,
+      }).then((res2) => {
+        postID = res2.body.node.id;
+        return res2;
+      });
+    expect(res).toHaveHTTPStatus(200);
+    expect(res.body.dbError).toBeFalsy();
+  });
+
+  it('POST /addNode (errors)', async () => {
+    const res = await request(server())
+      .post('/addNode')
       .send({
         ip: 'TestIP', name: 'TestName', port: 999999, parent_id: 1,
       });
@@ -42,8 +49,11 @@ describe('requests', () => {
     expect(res.body.dbError).toBeTruthy();
   });
 
-  // it('DELETE /nodes/:id', async () => {
-  //   const res = await request(solution())
-  //     .get('/nodes/')
-  // });
+  it('DELETE /deleteNode', async () => {
+    const res = await request(server())
+      .delete('/deleteNode')
+      .send({ id: postID });
+    expect(res).toHaveHTTPStatus(200);
+    expect(res.body.dbError).toBeFalsy();
+  });
 });
