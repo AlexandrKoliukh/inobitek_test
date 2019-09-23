@@ -4,7 +4,7 @@ const databaseConfig = {
     host: 'localhost',
     user: 'alk',
     password: 'poiuy09876',
-    database: 'inobitek_test',
+    database: 'test_alk_db',
   },
 };
 
