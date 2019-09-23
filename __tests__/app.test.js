@@ -4,6 +4,7 @@ import matchers from 'jest-supertest-matchers';
 import server from '../src/server';
 
 let postID = 0;
+let newNodeData = {};
 
 describe('requests', () => {
   beforeAll(() => {
@@ -19,12 +20,6 @@ describe('requests', () => {
     const res = await request(server()).get('/getNodesByParentId/0');
     expect(res).toHaveHTTPStatus(200);
   });
-
-  // it('GET /getNodesById/:id', async () => {
-  //   const res = await request(solution())
-  //     .get('/getNodesById/1');
-  //   expect(res).toHaveHTTPStatus(200);
-  // });
 
   it('POST /addNode', async () => {
     const res = await request(server())
@@ -47,6 +42,31 @@ describe('requests', () => {
       });
     expect(res).toHaveHTTPStatus(400);
     expect(res.body.dbError).toBeTruthy();
+  });
+
+  it('GET /getNodeById/:id', async () => {
+    const res = await request(server())
+      .get(`/getNodeById/${postID}`)
+      .then((res2) => {
+        newNodeData = { ...res2.body.node };
+        return res2;
+      });
+    expect(res).toHaveHTTPStatus(200);
+    expect(res.body.dbError).toBeFalsy();
+  });
+
+  it('UPDATE /updateNode', async () => {
+    const res = await request(server())
+      .put('/updateNode')
+      .send({
+        id: postID, ip: newNodeData.ip, port: newNodeData.port - 1, name: newNodeData.name,
+      })
+      .then((res2) => {
+        expect(res2.body.node.port).toBe(newNodeData.port - 1);
+        return res2;
+      });
+    expect(res).toHaveHTTPStatus(200);
+    expect(res.body.dbError).toBeFalsy();
   });
 
   it('DELETE /deleteNode', async () => {

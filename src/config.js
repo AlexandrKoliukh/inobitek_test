@@ -9,7 +9,7 @@ const databaseConfig = {
 };
 
 const serverConfig = {
-  port: 3000,
+  port: 3001,
 };
 
 export {
