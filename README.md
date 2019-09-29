@@ -24,7 +24,7 @@ Change database settings in /config.js
       },
     };
     
-Run server by command, with free port.
+Run server on free port.
 
     make start
 
