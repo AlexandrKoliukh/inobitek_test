@@ -14,4 +14,4 @@ initDB:
 	psql test_alk_db < init.sql
 
 start:
-	npx nodemon --exec babel-node src/index.js
+	npx nodemon --exec babel-node src/index.js $(port)

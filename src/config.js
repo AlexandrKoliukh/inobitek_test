@@ -1,18 +1,11 @@
 const databaseConfig = {
   client: 'pg',
   connection: {
-    host: 'localhost',
-    user: 'alk',
-    password: 'poiuy09876',
+    host: '',
+    user: '',
+    password: '',
     database: 'test_alk_db',
   },
 };
 
-const serverConfig = {
-  port: 3001,
-};
-
-export {
-  databaseConfig,
-  serverConfig,
-};
+export default databaseConfig;

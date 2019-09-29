@@ -1,6 +1,5 @@
 import server from './server';
-import { serverConfig } from './config';
 
-server().listen(serverConfig.port, () => {
-  console.log(`app is running on port ${serverConfig.port}`);
+const listener = server().listen(process.argv[2] || 0, () => {
+  console.log(`Server is running on port ${listener.address().port}`);
 });
