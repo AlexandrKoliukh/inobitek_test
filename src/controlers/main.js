@@ -1,5 +1,5 @@
 import knex from 'knex';
-import databaseConfig from '../config';
+import databaseConfig from '../../config';
 
 const tableName = 'nodes';
 const db = knex(databaseConfig);
