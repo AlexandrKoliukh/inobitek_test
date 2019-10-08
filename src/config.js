@@ -4,7 +4,7 @@ const databaseConfig = {
     host: '',
     user: '',
     password: '',
-    database: 'test_alk_db',
+    database: '',
   },
 };
 

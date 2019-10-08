@@ -8,7 +8,8 @@
 
 Command will create test_alk_db database. 
 
-    make initDB
+    createdb test_alk_db
+    psql test_alk_db -f init.sql -h 127.0.0.1 -p 5432 -U USER NAME -W
 
 <h2>Run server</h2>
 
@@ -24,14 +25,16 @@ Change database settings in /config.js
       },
     };
     
-Run server on free port.
+Run server.
 
-    make start
-
-Or pass port to argument.
-
-    make start port=1234
+    npx nodemon --exec babel-node src/index.js [port]
 
 <h2>For testing</h2>
 
-    make test
+    npm test
+    
+<h2>Production build</h2>
+
+    npm run build
+    
+Replace your front-end build to /public.

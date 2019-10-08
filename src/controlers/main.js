@@ -1,27 +1,16 @@
 import knex from 'knex';
-import databaseConfig from '../../config';
+import databaseConfig from '../config';
 
 const tableName = 'nodes';
 const db = knex(databaseConfig);
 
 const getNodesByParentId = (req, res) => {
-  const parentId = +req.params.parentId || null;
+  console.log(req.query.parentId);
+  const parentId = req.query.parentId || null;
   db(tableName).where({ parent_id: parentId }).select('*')
     .then((items) => {
       if (items.length) {
         res.json({ nodes: items, dbError: false, dataExists: true });
-      } else {
-        res.json({ dataExists: false, dbError: false });
-      }
-    })
-    .catch(() => res.status(400).json({ dbError: true }));
-};
-
-const getNodeById = (req, res) => {
-  db(tableName).where({ id: req.params.id }).select('*')
-    .then((items) => {
-      if (items.length) {
-        res.json({ node: items[0], dbError: false, dataExists: true });
       } else {
         res.json({ dataExists: false, dbError: false });
       }
@@ -69,7 +58,6 @@ const deleteNode = (req, res) => {
 
 export {
   getNodesByParentId,
-  getNodeById,
   postNode,
   putNode,
   deleteNode,
