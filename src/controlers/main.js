@@ -5,8 +5,7 @@ const tableName = 'nodes';
 const db = knex(databaseConfig);
 
 const getNodesByParentId = (req, res) => {
-  console.log(req.query.parentId);
-  const parentId = req.query.parentId || null;
+  const parentId = +req.query.parentId || null;
   db(tableName).where({ parent_id: parentId }).select('*')
     .then((items) => {
       if (items.length) {
@@ -22,7 +21,6 @@ const postNode = (req, res) => {
   const {
     ip, port, name, parentId,
   } = req.body;
-
   db(tableName).insert({
     ip, port, name, parent_id: +parentId || null,
   })
