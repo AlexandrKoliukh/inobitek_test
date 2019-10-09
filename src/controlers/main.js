@@ -1,62 +1,80 @@
 import knex from 'knex';
+import {
+  wrapError,
+  UniqueViolationError,
+  NotNullViolationError,
+} from 'db-errors';
 import databaseConfig from '../config';
 
 const tableName = 'nodes';
 const db = knex(databaseConfig);
 
-const getNodesByParentId = (req, res) => {
-  const parentId = +req.query.parentId || null;
-  db(tableName).where({ parent_id: parentId }).select('*')
-    .then((items) => {
-      if (items.length) {
-        res.json({ nodes: items, dbError: false, dataExists: true });
-      } else {
-        res.json({ dataExists: false, dbError: false });
-      }
-    })
-    .catch(() => res.status(400).json({ dbError: true }));
+const errorHandler = (e, res) => {
+  const err = (wrapError(e));
+
+  if (err instanceof UniqueViolationError) {
+    console.error(`Columns: ${err.columns}, must be unique`);
+    return res.status(400).json({ error: `Fields: ${err.columns}, must be unique` });
+  } else if (err instanceof NotNullViolationError) {
+    console.error(`Not null constraint failed for table ${err.table} and column ${err.column}`);
+    return res.status(400).json({ error: `Field: ${err.column}, must be not null`});
+  } else {
+    console.error(`DB error: ${e}`);
+    return res.status(500).json({ error: 'Internal server error'});
+  }
 };
 
-const postNode = (req, res) => {
+const getNodesByParentId = (req, res) => {
+  const parentId = +req.query.parentId || null;
+  db(tableName).where({ parent_id: parentId }).select([
+    'id', 'ip', 'name', 'port', 'parent_id',
+  ])
+    .then((items) => {
+        res.json({ nodes: items });
+    })
+    .catch((e) => errorHandler(e, res));
+};
+
+const addNode = (req, res) => {
   const {
     ip, port, name, parentId,
   } = req.body;
   db(tableName).insert({
     ip, port, name, parent_id: +parentId || null,
   })
-    .returning('*')
+    .returning(['id', 'ip', 'name', 'port', 'parent_id'])
     .then((item) => {
-      res.json({ node: item[0], dbError: false });
+      res.json({ node: item[0] });
     })
-    .catch(() => res.status(400).json({ dbError: true }));
+    .catch((e) => errorHandler(e, res));
 };
 
-const putNode = (req, res) => {
+const updateNode = (req, res) => {
   const {
     id, port, name, ip,
   } = req.body;
   db(tableName).where({ id }).update({
     port, name, ip,
   })
-    .returning('*')
+    .returning(['id', 'ip', 'name', 'port', 'parent_id'])
     .then((item) => {
-      res.json({ node: item[0], dbError: false });
+      res.json({ node: item[0] });
     })
-    .catch(() => res.status(400).json({ dbError: true }));
+    .catch((e) => errorHandler(e, res));
 };
 
 const deleteNode = (req, res) => {
   const { id } = req.body;
   db(tableName).where({ id }).del()
     .then(() => {
-      res.json({ id, dbError: false });
+      res.json({ id });
     })
-    .catch(() => res.status(400).json({ dbError: true }));
+    .catch((e) => errorHandler(e, res));
 };
 
 export {
   getNodesByParentId,
-  postNode,
-  putNode,
+  addNode,
+  updateNode,
   deleteNode,
 };

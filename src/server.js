@@ -14,8 +14,8 @@ export default () => {
   app.use(Express.static('public/build'));
 
   app.get('/getNodesByParentId', (req, res) => main.getNodesByParentId(req, res));
-  app.post('/addNode', (req, res) => main.postNode(req, res));
-  app.post('/updateNode', (req, res) => main.putNode(req, res));
+  app.post('/addNode', (req, res) => main.addNode(req, res));
+  app.post('/updateNode', (req, res) => main.updateNode(req, res));
   app.post('/deleteNode', (req, res) => main.deleteNode(req, res));
 
   return app;
