@@ -13,15 +13,11 @@ const errorHandler = (e, res) => {
   const err = (wrapError(e));
 
   if (err instanceof UniqueViolationError) {
-    console.error(`Columns: ${err.columns}, must be unique`);
     return res.status(400).json({ error: `Fields: ${err.columns}, must be unique` });
-  } else if (err instanceof NotNullViolationError) {
-    console.error(`Not null constraint failed for table ${err.table} and column ${err.column}`);
-    return res.status(400).json({ error: `Field: ${err.column}, must be not null`});
-  } else {
-    console.error(`DB error: ${e}`);
-    return res.status(500).json({ error: 'Internal server error'});
+  } if (err instanceof NotNullViolationError) {
+    return res.status(400).json({ error: `Field: ${err.column}, must be not null` });
   }
+  return res.status(500).json({ error: 'Internal server error' });
 };
 
 const getNodesByParentId = (req, res) => {
@@ -30,9 +26,9 @@ const getNodesByParentId = (req, res) => {
     'id', 'ip', 'name', 'port', 'parent_id',
   ])
     .then((items) => {
-        res.json({ nodes: items });
+      res.json({ nodes: items });
     })
-    .catch((e) => errorHandler(e, res));
+    .catch(e => errorHandler(e, res));
 };
 
 const addNode = (req, res) => {
@@ -46,7 +42,7 @@ const addNode = (req, res) => {
     .then((item) => {
       res.json({ node: item[0] });
     })
-    .catch((e) => errorHandler(e, res));
+    .catch(e => errorHandler(e, res));
 };
 
 const updateNode = (req, res) => {
@@ -60,7 +56,7 @@ const updateNode = (req, res) => {
     .then((item) => {
       res.json({ node: item[0] });
     })
-    .catch((e) => errorHandler(e, res));
+    .catch(e => errorHandler(e, res));
 };
 
 const deleteNode = (req, res) => {
@@ -69,7 +65,7 @@ const deleteNode = (req, res) => {
     .then(() => {
       res.json({ id });
     })
-    .catch((e) => errorHandler(e, res));
+    .catch(e => errorHandler(e, res));
 };
 
 export {

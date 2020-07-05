@@ -2,8 +2,8 @@ const databaseConfig = {
   client: 'pg',
   connection: {
     host: 'localhost',
-    user: 'alk',
-    password: 'poiuy09876',
+    user: '',
+    password: '',
     database: 'test_alk_db',
   },
 };

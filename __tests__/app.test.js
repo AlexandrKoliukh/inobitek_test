@@ -10,19 +10,14 @@ describe('requests', () => {
     expect.extend(matchers);
   });
 
-  it('GET /', async () => {
-    const res = await request(server()).get('/');
+  it('GET /nodes?parentId', async () => {
+    const res = await request(server()).get('/nodes?parentId=0');
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('GET /getNodesByParentId?parentId', async () => {
-    const res = await request(server()).get('/getNodesByParentId?parentId=0');
-    expect(res).toHaveHTTPStatus(200);
-  });
-
-  it('POST /addNode', async () => {
+  it('POST /nodes', async () => {
     const res = await request(server())
-      .post('/addNode')
+      .post('/nodes')
       .send({
         ip: 'TestIP', name: 'TestName', port: 9, parent_id: 1,
       }).then((res2) => {
@@ -32,9 +27,9 @@ describe('requests', () => {
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('POST /addNode (errors)', async () => {
+  it('POST /nodes (errors)', async () => {
     const res = await request(server())
-      .post('/addNode')
+      .post('/nodes')
       .send({
         ip: 'TestIP', name: 'TestName', port: 999, parent_id: 1,
       });
@@ -42,9 +37,9 @@ describe('requests', () => {
   });
 
 
-  it('POST /updateNode', async () => {
+  it('PUT /nodes', async () => {
     const res = await request(server())
-      .post('/updateNode')
+      .put('/nodes')
       .send({
         id: newNodeData.id, ip: newNodeData.ip, port: newNodeData.port - 1, name: newNodeData.name,
       })
@@ -55,16 +50,16 @@ describe('requests', () => {
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('POST /deleteNode', async () => {
+  it('DELETE /nodes', async () => {
     const res = await request(server())
-      .post('/deleteNode')
+      .delete('/nodes')
       .send({ id: newNodeData.id });
     expect(res).toHaveHTTPStatus(200);
   });
 
-  it('POST /deleteNode (errors)', async () => {
+  it('DELETE /nodes (errors)', async () => {
     const res = await request(server())
-      .post('/deleteNode')
+      .delete('/nodes')
       .send({ id: 'error' });
     expect(res).toHaveHTTPStatus(500);
   });
