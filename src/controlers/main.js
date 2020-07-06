@@ -26,7 +26,7 @@ const getNodesByParentId = (req, res) => {
     'id', 'ip', 'name', 'port', 'parent_id',
   ])
     .then((items) => {
-      res.json({ nodes: items });
+      res.json(items);
     })
     .catch(e => errorHandler(e, res));
 };
@@ -40,7 +40,7 @@ const addNode = (req, res) => {
   })
     .returning(['id', 'ip', 'name', 'port', 'parent_id'])
     .then((item) => {
-      res.json({ node: item[0] });
+      res.json(item[0]);
     })
     .catch(e => errorHandler(e, res));
 };
@@ -54,7 +54,7 @@ const updateNode = (req, res) => {
   })
     .returning(['id', 'ip', 'name', 'port', 'parent_id'])
     .then((item) => {
-      res.json({ node: item[0] });
+      res.json(item[0]);
     })
     .catch(e => errorHandler(e, res));
 };
