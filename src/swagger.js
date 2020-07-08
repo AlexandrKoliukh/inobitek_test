@@ -12,7 +12,7 @@ export const addSwagger = (app) => {
 
   const options = {
     swaggerDefinition,
-    apis: [`${__dirname}/routes.js`],
+    apis: [`${__dirname}/api-description.yml`],
   };
 
   const swaggerSpec = swaggerJSDoc(options);

@@ -1,0 +1,145 @@
+info:
+  title: Test application API
+  version: 1.0.0
+basePath: /
+swagger: '2.0'
+paths:
+  /nodes:
+    get:
+      tags:
+        - Nodes
+      summary: Get nodes by parent node id
+      produces:
+        - application/json
+      parameters:
+        - name: parentId
+          description: Parent node id
+          in: query
+          required: false
+          type: string
+          allowEmptyValue: true
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Node'
+    post:
+      tags:
+        - Nodes
+      summary: Add a new node
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewNode'
+      responses:
+        '200':
+          description: Created node
+          x-application/json:
+            name: Puma
+            type: Dog
+            color: Black
+            gender: Female
+            breed: Mixed
+          schema:
+            $ref: '#/definitions/Node'
+        '400':
+          description: Bad request data
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/Error'
+#    put:
+#      tags:
+#        - Nodes
+#      summary: Update existing node
+#      parameters:
+#        - in: body
+#          name: body
+#          required: true
+#          schema:
+#            $ref: '#/definitions/UpdateNode'
+#      responses:
+#        '200':
+#          description: Updated node
+#          schema:
+#            $ref: '#/definitions/Node'
+#        '400':
+#          description: Bad request data
+#          schema:
+#            $ref: '#/definitions/Error'
+#        '500':
+#          description: Internal error
+#          schema:
+#            $ref: '#/definitions/Error'
+#    delete:
+#      tags:
+#        - Nodes
+#      summary: Delete node
+#      parameters:
+#        - in: body
+#          name: body
+#          required: true
+#          schema:
+#            type: object
+#            properties:
+#              id:
+#                type: integer
+#      responses:
+#        '200':
+#          description: Deleted node id
+#          schema:
+#            type: object
+#            properties:
+#              id:
+#                type: integer
+definitions:
+  NewNode:
+    type: object
+    required:
+      - port
+      - ip
+      - name
+    properties:
+      port:
+        type: integer
+      name:
+        type: string
+      ip:
+        type: string
+      parentId:
+        type: integer
+  Node:
+    allOf:
+      - $ref: '#/definitions/NewNode'
+      - properties:
+          id:
+            type: string
+  UpdateNode:
+    type: object
+    required:
+      - id
+    properties:
+      port:
+        type: integer
+      name:
+        type: string
+      ip:
+        type: string
+      id:
+        type: string
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+responses: {}
+parameters: {}
+securityDefinitions: {}
+tags: []
+

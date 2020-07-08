@@ -21,7 +21,7 @@ describe('requests', () => {
       .send({
         ip: 'TestIP', name: 'TestName', port: 9, parent_id: 1,
       }).then((res2) => {
-        newNodeData = res2.body.node;
+        newNodeData = res2.body;
         return res2;
       });
     expect(res).toHaveHTTPStatus(200);
@@ -44,7 +44,7 @@ describe('requests', () => {
         id: newNodeData.id, ip: newNodeData.ip, port: newNodeData.port - 1, name: newNodeData.name,
       })
       .then((res2) => {
-        expect(res2.body.node.port).toBe(newNodeData.port - 1);
+        expect(res2.body.port).toBe(newNodeData.port - 1);
         return res2;
       });
     expect(res).toHaveHTTPStatus(200);
