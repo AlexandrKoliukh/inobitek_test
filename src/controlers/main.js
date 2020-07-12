@@ -3,6 +3,8 @@ import {
   wrapError,
   UniqueViolationError,
   NotNullViolationError,
+  ConstraintViolationError,
+  DataError,
 } from 'db-errors';
 import databaseConfig from '../config';
 
@@ -12,10 +14,12 @@ const db = knex(databaseConfig);
 const errorHandler = (e, res) => {
   const err = (wrapError(e));
 
-  if (err instanceof UniqueViolationError) {
+  if (err instanceof UniqueViolationError || err instanceof ConstraintViolationError) {
     return res.status(400).json({ error: `Fields: ${err.columns}, must be unique` });
   } if (err instanceof NotNullViolationError) {
     return res.status(400).json({ error: `Field: ${err.column}, must be not null` });
+  } if (err instanceof DataError) {
+    return res.status(415).json({ error: 'Unsupported data type' });
   }
   return res.status(500).json({ error: 'Internal server error' });
 };

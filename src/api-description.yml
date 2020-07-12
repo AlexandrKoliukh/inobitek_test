@@ -18,6 +18,7 @@ paths:
           required: false
           type: string
           allowEmptyValue: true
+          x-example: ''
       responses:
         '200':
           description: Success
@@ -29,6 +30,8 @@ paths:
       tags:
         - Nodes
       summary: Add a new node
+      consumes:
+        - application/json
       parameters:
         - in: body
           name: body
@@ -38,12 +41,6 @@ paths:
       responses:
         '200':
           description: Created node
-          x-application/json:
-            name: Puma
-            type: Dog
-            color: Black
-            gender: Female
-            breed: Mixed
           schema:
             $ref: '#/definitions/Node'
         '400':
@@ -58,6 +55,8 @@ paths:
 #      tags:
 #        - Nodes
 #      summary: Update existing node
+#      consumes:
+#        - application/json
 #      parameters:
 #        - in: body
 #          name: body
@@ -81,6 +80,8 @@ paths:
 #      tags:
 #        - Nodes
 #      summary: Delete node
+#      consumes:
+#        - application/json
 #      parameters:
 #        - in: body
 #          name: body
@@ -112,8 +113,13 @@ definitions:
         type: string
       ip:
         type: string
-      parentId:
+      parent_id:
         type: integer
+    example:
+      port: 214
+      name: 'Name ds'
+      ip: '1.2.3.4'
+      parent_id: null
   Node:
     allOf:
       - $ref: '#/definitions/NewNode'
