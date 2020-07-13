@@ -31,7 +31,14 @@ Run server.
 
 <h2>For testing</h2>
 
+App
+
     npm test
+
+Api
+
+    npx nodemon --exec babel-node src/index.js 5000
+    npx dredd
     
 <h2>Production build</h2>
 
