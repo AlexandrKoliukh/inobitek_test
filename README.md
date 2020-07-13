@@ -31,7 +31,13 @@ Run server.
 
 <h2>For testing</h2>
 
+App
+
     npm test
+
+Api
+
+    npx jest openApi
     
 <h2>Production build</h2>
 
