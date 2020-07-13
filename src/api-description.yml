@@ -77,27 +77,27 @@ paths:
 #          description: Internal error
 #          schema:
 #            $ref: '#/definitions/Error'
-#    delete:
-#      tags:
-#        - Nodes
-#      summary: Delete node
-#      parameters:
-#        - in: body
-#          name: body
-#          required: true
-#          schema:
-#            type: object
-#            properties:
-#              id:
-#                type: integer
-#      responses:
-#        '200':
-#          description: Deleted node id
-#          schema:
-#            type: object
-#            properties:
-#              id:
-#                type: integer
+    delete:
+      tags:
+        - Nodes
+      summary: Delete node
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+      responses:
+        '200':
+          description: Deleted node id
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
 definitions:
   NewNode:
     type: object
