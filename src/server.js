@@ -11,7 +11,7 @@ export default () => {
   app.use(cors());
   app.use(bodyParser.json());
   app.use(morgan('combined'));
-  app.use(Express.static('public/build'));
+  app.use(Express.static('public'));
 
   addSwagger(app);
   addRoutes(app);

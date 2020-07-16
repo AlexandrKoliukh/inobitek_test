@@ -25,6 +25,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-flow": "^7.0.0",
+    "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.0.0",
     "eslint": "^5.12.1",
@@ -36,6 +37,7 @@
     "jest": "^24.0.0",
     "jest-cli": "^24.0.0",
     "jest-supertest-matchers": "0.0.2",
+    "k6": "0.0.0",
     "nodemon": "^1.19.2",
     "supertest": "^4.0.2"
   },

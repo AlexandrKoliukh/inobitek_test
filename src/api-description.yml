@@ -2,10 +2,12 @@ info:
   title: Test application API
   version: 1.0.0
 basePath: /
+host: localhost:5000
 swagger: '2.0'
 paths:
   /nodes:
     get:
+      operationId: 'get nodes'
       tags:
         - Nodes
       summary: Get nodes by parent node id
@@ -26,6 +28,7 @@ paths:
             items:
               $ref: '#/definitions/Node'
     post:
+      operationId: 'post nodes'
       tags:
         - Nodes
       summary: Add a new node

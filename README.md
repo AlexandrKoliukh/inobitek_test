@@ -1,3 +1,18 @@
+# Запуск k6
+
+Для генерирования тестов из swagger: https://k6.io/blog/load-testing-your-api-with-swagger-openapi-and-k6
+
+1. Установить зависимости
+1. Установить k6 в систему https://k6.io/docs/getting-started/installation
+1. Сгенерировать скелет командой `npx openapi-generator generate -i src/api-description.yml -g k6 -o ./k6/`
+
+1. Исправить код тестов(Необъявленные переменные, параметры запросов)
+1. Запустить сервер `npx nodemon --exec babel-node src/index.js 5000`
+
+Запустить k6 
+
+    k6 run k6/script.js --vus 10 --iterations 10
+
 <h2>Install</h2>
 
     git clone https://github.com/AlexandrKoliukh/inobitek_test_back.git
