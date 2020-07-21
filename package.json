@@ -39,6 +39,7 @@
     "jest-supertest-matchers": "0.0.2",
     "k6": "0.0.0",
     "nodemon": "^1.19.2",
+    "openapi-client": "^1.0.5",
     "supertest": "^4.0.2"
   },
   "dependencies": {
