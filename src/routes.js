@@ -154,4 +154,6 @@ export const addRoutes = (app) => {
    *               type: integer
    */
   app.delete('/nodes', (req, res) => main.deleteNode(req, res));
+
+  app.get('/log', (req, res) => main.getLog(req, res));
 };
